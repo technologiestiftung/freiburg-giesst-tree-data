@@ -2,11 +2,13 @@
 
 # Gieß den Kiez Tree data
 
+> [!NOTE]
+> This is the Freiburg copy of [giessdenkiez-de-tree-data](https://github.com/technologiestiftung/giessdenkiez-de-tree-data). For the Freiburg import process see [README-FREIBURG.md](README-FREIBURG.md).
+
 ## TL;DR usage
 
 > [!WARNING]  
 > This is a very short version for when you already know the process. Please read the full documentation below for more details and hints.
-
 
 1. Prepare `.env` with `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`
 2. Install dependencies: `mise install && npm ci`
@@ -29,8 +31,8 @@ node --env-file=.env src/cli.ts --clean-up
 
 5. Verify results on local/staging before production.
 6. !Hint: For local restores: if `pg_restore` fails with `relation "most_frequent_tree_species" does not exist`, disable the `public.trees` refresh triggers before restore and enable them afterwards (see [Restoring a production backup locally](#restoring-a-production-backup-locally)).
-7. !Hint: When tested on the staging environment you can use 
-  `backup-and-restore/backup-temp-trees.sh` and `backup-and-restore/restore-temp-trees.sh` to move the temp_trees data from the staging to the production database. No need to import the data from the GeoJSON files again. The restore script resets `temp_trees.processed` to `false` so the production upsert can process all rows.
+7. !Hint: When tested on the staging environment you can use
+   `backup-and-restore/backup-temp-trees.sh` and `backup-and-restore/restore-temp-trees.sh` to move the temp_trees data from the staging to the production database. No need to import the data from the GeoJSON files again. The restore script resets `temp_trees.processed` to `false` so the production upsert can process all rows.
 
 ## Description
 
@@ -47,7 +49,6 @@ Using a Node.js cli we do the following steps:
 3. Delete all trees that are no longer in the new dataset
 4. Update and Insert (upsert) all trees that are in the new dataset
 5. Clean up the temporary table
-
 
 ## Requirements
 
@@ -77,14 +78,12 @@ PGDATABASE=
 > [!WARNING]
 > This is not reliable. In 2025 we replaced the creation of the geojson files with a manual process using QGis.
 
-
-
 To make sure we have a consistent environment, we created a docker image with all dependencies installed. You can use this image to poke around the data using gdal or other tools.
 
 To build the image, run:
 
 ```bash
-docker build -t technologiestiftung/giessdenkiez-de-tree-data .
+docker build -t technologiestiftung/freiburg-giesst-tree-data .
 ```
 
 This image will create a container where you can run an interactive shell session. It will not run any scripts. First copy or rename the `sample.env` to `.env` and populate it with the right variables. Then run the container in detached mode:
@@ -98,10 +97,8 @@ docker run --name gdk-runner --detach \
 
 The above command will create a container named `gdk-runner` with the environment variables from the `.env` file and the `tree_data` directory mounted inside the container. Any change you make to the `tree_data` directory will be reflected inside the container.
 
-
 For convinence see the [Makefile](./Makefile) for more commands.
 We also added this as a devcontainer to vscode.
-
 
 ### Data Processing with Node.js
 
@@ -330,6 +327,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Lisa-Stubert"><img src="https://avatars.githubusercontent.com/u/61182572?v=4?s=64" width="64px;" alt="Lisa-Stubert"/><br /><sub><b>Lisa-Stubert</b></sub></a><br /><a href="#data-Lisa-Stubert" title="Data">🔣</a> <a href="https://github.com/technologiestiftung/giessdenkiez-de-tree-data/commits?author=Lisa-Stubert" title="Code">💻</a> <a href="https://github.com/technologiestiftung/giessdenkiez-de-tree-data/commits?author=Lisa-Stubert" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/vogelino"><img src="https://avatars.githubusercontent.com/u/2759340?v=4?s=64" width="64px;" alt="Lucas Vogel"/><br /><sub><b>Lucas Vogel</b></sub></a><br /><a href="https://github.com/technologiestiftung/giessdenkiez-de-tree-data/commits?author=vogelino" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/julizet"><img src="https://avatars.githubusercontent.com/u/52455010?v=4?s=64" width="64px;" alt="Julia Zet"/><br /><sub><b>Julia Zet</b></sub></a><br /><a href="https://github.com/technologiestiftung/giessdenkiez-de-tree-data/commits?author=julizet" title="Code">💻</a> <a href="https://github.com/technologiestiftung/giessdenkiez-de-tree-data/commits?author=julizet" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/LuiseBrandenburger"><img src="https://avatars.githubusercontent.com/u/61413319?v=4?s=64" width="64px;" alt="Luise Brandenburger"/><br /><sub><b>Luise Brandenburger</b></sub></a><br /><a href="https://github.com/technologiestiftung/freiburg-giesst-tree-data/commits?author=LuiseBrandenburger" title="Code">💻</a> <a href="#data-LuiseBrandenburger" title="Data">🔣</a> <a href="https://github.com/technologiestiftung/freiburg-giesst-tree-data/commits?author=LuiseBrandenburger" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
