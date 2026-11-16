@@ -1,0 +1,14 @@
+# ABOUTME: Slim Freiburg image for the tree import (Node CLI, ogr2ogr, psql), see README-FREIBURG.md.
+# ABOUTME: The upstream Dockerfile is a dev workspace and stays untouched to keep upstream merges small.
+# Use interactively:
+#   docker run --rm -it --env-file .env <image> bash
+FROM node:26-bookworm-slim
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends gdal-bin postgresql-client ca-certificates \
+	&& rm -rf /var/lib/apt/lists/*
+WORKDIR /usr/app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts
+COPY src src
+COPY sql sql
+CMD ["bash"]

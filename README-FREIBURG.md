@@ -39,3 +39,16 @@ node src/cli.ts --clean-up
 Reihenfolge der Umgebungen: lokal, dann Staging, dann Produktion. Wenn auf Staging alles stimmt, kann `temp_trees` mit `backup-and-restore/` nach Produktion übertragen werden, siehe README.
 
 Stand 04.11.2026: 45.602 Features im WFS. Davon werden 45.365 Bäume importiert, 20 IDs werden als Kollision übersprungen.
+
+## Mit Docker
+
+`Dockerfile.freiburg` baut ein schlankes Image mit Node, `ogr2ogr` und `psql`. Das Berliner `Dockerfile` (Entwicklungs-Workspace) bleibt unverändert.
+
+```bash
+docker build -f Dockerfile.freiburg -t ghcr.io/technologiestiftung/freiburg-giesst-tree-data:local .
+docker run --rm -it --env-file .env ghcr.io/technologiestiftung/freiburg-giesst-tree-data:local bash
+```
+
+Im Container stehen die `PG*`-Variablen und `WFS` schon in der Umgebung. Die Befehle aus dem Ablauf oben laufen dort unverändert, nur `set -a; source .env; set +a` entfällt.
+
+Releases bauen das Image per GitHub Actions nach `ghcr.io/technologiestiftung/freiburg-giesst-tree-data:<version>` (`.github/workflows/docker-image.yml`, auch manuell startbar). Auf dem Server läuft es im Netzwerk der API, siehe `server/freiburg-giesst-tree-data` im Workspace.
