@@ -1,5 +1,5 @@
 # Define variables for docker commands
-IMAGE_NAME=technologiestiftung/giessdenkiez-de-tree-data
+IMAGE_NAME=technologiestiftung/freiburg-giesst-tree-data
 CONTAINER_NAME=gdk-runner
 
 
