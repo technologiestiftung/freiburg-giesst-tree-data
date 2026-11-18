@@ -1,5 +1,4 @@
 # ABOUTME: Builds Dockerfile.freiburg and pushes it to GHCR on release or manual dispatch.
-# ABOUTME: The image is used interactively on the server for the tree import (README-FREIBURG.md).
 name: Docker Image (GHCR)
 
 env:
